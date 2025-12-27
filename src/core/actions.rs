@@ -1,12 +1,12 @@
-use std::fs::File;
-use std::io::Read;
-use std::sync::{Arc, Mutex};
-use std::thread;
-use std::time::{Duration, Instant};
-
 use chrono::Utc;
 use enigo::{Coordinate, Direction, Enigo, Mouse, Settings};
 use rdev::{Event, EventType, Key, listen};
+use std::fs::File;
+use std::io::Read;
+use std::sync::mpsc;
+use std::sync::{Arc, Mutex};
+use std::thread;
+use std::time::{Duration, Instant};
 
 // Personals
 use crate::helpers::utils::{
@@ -28,6 +28,8 @@ pub fn record_mouse(file_name: &str) {
 
     let events_clone = events.clone();
     let last_pos_clone = last_pos.clone();
+
+    let mut index_of_action = 0;
 
     thread::spawn(move || {
         if let Err(error) = listen(move |event: Event| {
@@ -68,8 +70,29 @@ pub fn record_mouse(file_name: &str) {
                     }
                 }
 
+                // ::: Make the time to execute other actions :::
+                EventType::KeyPress(Key::ControlLeft) => {
+                    evs.push(RecordedEvent {
+                        action_record: ActionEnum::TimeAction {
+                            index_of_action: index_of_action,
+                            is_final: false,
+                        },
+                        timestamp,
+                    });
+                    index_of_action = index_of_action + 1;
+                }
+
                 // ::: Stop the recording and save the events :::
                 EventType::KeyPress(Key::Escape) => {
+                    // Add the final time action
+                    evs.push(RecordedEvent {
+                        action_record: ActionEnum::TimeAction {
+                            index_of_action: index_of_action,
+                            is_final: true,
+                        },
+                        timestamp,
+                    });
+
                     let json = serde_json::to_string_pretty(&*evs).unwrap();
 
                     println!(
@@ -95,6 +118,9 @@ pub fn record_mouse(file_name: &str) {
 
 pub fn replay_mouse(file_name: &str, file_number: &str) {
     println!("Reproducing recording...");
+
+    // ::: Define optional stream client :::
+    let (tx, rx) = mpsc::channel::<ActionEnum>();
 
     // ::: Get the file number and the output path :::
     let file_number_used: u32 = if file_number.is_empty() {
@@ -137,6 +163,20 @@ pub fn replay_mouse(file_name: &str, file_number: &str) {
     let recording_start = events[0].timestamp;
     let start = Instant::now();
 
+    // ::: Spawn a thread to send the actions to the stream client :::
+    let socket_thread = thread::spawn(move || {
+        let mut client = crate::models::structures::IRRLClient::connect();
+
+        for action in rx {
+            client.send_action(action.clone());
+
+            if let ActionEnum::TimeAction { is_final: true, .. } = action {
+                client.close();
+                break;
+            }
+        }
+    });
+
     // ::: Main loop of event reproduction :::
     for event in events {
         let target_time = Duration::from_millis((event.timestamp - recording_start) as u64);
@@ -163,8 +203,22 @@ pub fn replay_mouse(file_name: &str, file_number: &str) {
             ActionEnum::ButtonRelease { button, .. } => {
                 let _ = enigo.button(map_enigo_button(button), Direction::Release);
             }
+
+            // ::: Send the time action to the stream client :::
+            ActionEnum::TimeAction {
+                index_of_action,
+                is_final,
+            } => {
+                let _ = tx.send(ActionEnum::TimeAction {
+                    index_of_action,
+                    is_final,
+                });
+            }
         }
     }
+
+    // ::: Wait for the socket thread to finish :::
+    let _ = socket_thread.join();
 
     println!("Reproduction finished!");
 }

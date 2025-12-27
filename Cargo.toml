@@ -1,5 +1,5 @@
 [package]
-name = "mouse-recorder"
+name = "IRRL"
 authors = ["James Ferney Rudas Marin <rudasmarinjf@gmail.com>"]
 version = "1.0.0"
 edition = "2024"

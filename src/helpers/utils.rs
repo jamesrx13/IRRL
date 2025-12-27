@@ -8,6 +8,7 @@ pub fn map_enigo_button(button: SerializableButton) -> enigo::Button {
         SerializableButton::Left => enigo::Button::Left,
         SerializableButton::Right => enigo::Button::Right,
         SerializableButton::Middle => enigo::Button::Middle,
+        SerializableButton::ControlLeft => enigo::Button::Left, //TODO: Map properly if needed
     }
 }
 
