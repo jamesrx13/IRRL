@@ -131,6 +131,19 @@ pub fn replay_mouse(file_name: &str, file_number: &str) {
     // ::: Get the file number and the output path :::
     let file_number_used: u32 = if file_number.is_empty() {
         let max_count = get_count_of_recordings(file_name);
+
+        if max_count == 0 {
+            println!(
+                "No recordings found for '{}'. Please record first.",
+                file_name
+            );
+            println!(
+                "Working directory: {}",
+                std::env::current_dir().unwrap().display()
+            );
+            std::process::exit(1);
+        }
+
         rand::random::<u32>() % max_count + 1
     } else {
         file_number.parse::<u32>().unwrap()
@@ -227,4 +240,5 @@ pub fn replay_mouse(file_name: &str, file_number: &str) {
     let _ = socket_thread.join();
 
     println!("Reproduction finished!");
+    std::process::exit(0);
 }
