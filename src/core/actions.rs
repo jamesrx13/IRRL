@@ -79,6 +79,12 @@ pub fn record_mouse(file_name: &str) {
                         },
                         timestamp,
                     });
+
+                    print!(
+                        "Marked time action #{} at {} ms\n",
+                        index_of_action, timestamp
+                    );
+
                     index_of_action = index_of_action + 1;
                 }
 
