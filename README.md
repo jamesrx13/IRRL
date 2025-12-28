@@ -31,7 +31,7 @@ And run the example:
 ---
 ## Autor
 
-- **Nombre**: James Rudas
+- **Nombre**: IRRL (Input Recording Replay Logger)
 - **GitHub**: [jamesrx13](https://github.com/jamesrx13)
 - **Email**: rudasmarinjf@gmail.com
 - **Sitio web**: [jamesrudas.com](https://jamesrudas.com/)
