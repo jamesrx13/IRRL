@@ -9,13 +9,12 @@ It can be used to resolve actions marked with reCaptchaV3 or similar, as it repr
 ## Create a New Recording
 `cargo run -- record <recording_name>`
 
-## Run a some record
-`cargo run -- replay <recording_name>`
-
-`cargo run -- replay <recording_name> <recording_index>`
-
 - Press the ***Ctrl*** key if you need to make a some action 
 - Press the ***Esc*** key if you need to stop the recording
+  
+## Run a some record
+`cargo run -- replay <recording_name>`
+`cargo run -- replay <recording_name> <recording_index>`
 
 # Run the Python Example
 
