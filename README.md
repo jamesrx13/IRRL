@@ -29,10 +29,12 @@ And run the example:
 - `python ./main.py`
 
 ---
+## IRRL (Input Recording Replay Logger)
+---
 ## Autor
 
-- **Nombre**: IRRL (Input Recording Replay Logger)
+- **Name**: James Rudas
 - **GitHub**: [jamesrx13](https://github.com/jamesrx13)
 - **Email**: rudasmarinjf@gmail.com
-- **Sitio web**: [jamesrudas.com](https://jamesrudas.com/)
+- **Web**: [jamesrudas.com](https://jamesrudas.com/)
 
