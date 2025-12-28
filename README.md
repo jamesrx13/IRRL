@@ -14,6 +14,7 @@ It can be used to resolve actions marked with reCaptchaV3 or similar, as it repr
   
 ## Run a some record
 `cargo run -- replay <recording_name>`
+
 `cargo run -- replay <recording_name> <recording_index>`
 
 # Run the Python Example
