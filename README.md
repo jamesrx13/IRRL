@@ -29,9 +29,9 @@ And run the example:
 - `python ./main.py`
 
 ---
-## IRRL (Input Recording Replay Logger)
+#### IRRL (Input Recording Replay Logger)
 ---
-## Autor
+### Autor
 
 - **Name**: James Rudas
 - **GitHub**: [jamesrx13](https://github.com/jamesrx13)
