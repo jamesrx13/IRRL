@@ -1,3 +1,6 @@
+*Project developed in Rust to perform automations where cursor interaction is necessary.
+It can be used to resolve actions marked with reCaptchaV3 or similar, as it reproduces previously recorded cursor movements and can have multiple recordings from multiple pages.*
+
 # Development Mode
 
 ## Start the Project
