@@ -6,6 +6,15 @@ It can be used to resolve actions marked with reCaptchaV3 or similar, as it repr
 ## Start the Project
 `cargo build`
 
+### In linux (Ubuntu/Debian)
+- `sudo apt update`
+- `sudo apt install -y \
+    pkg-config \
+    libx11-dev \
+    libxtst-dev \
+    libxi-dev`
+- `sudo apt install -y libxdo-dev xdotool`
+
 ## Create a New Recording
 `cargo run -- record <recording_name>`
 
